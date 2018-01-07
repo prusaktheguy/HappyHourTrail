@@ -40,7 +40,7 @@ public class UpdateDataActivity  extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
 
 //        startActivity(new Intent(MainActivity.this, UserMainActivity.class));
-        new RetrieveFeedTask().execute("");
+        new RetrieveFeedTask().execute("http://chmielowa-dolina.ontap.pl/","http://kij.ontap.pl/","http://piw-paw-lodz.ontap.pl/","http://piwoteka-narodowa.ontap.pl/","http://z-innej-beczki.ontap.pl/");
 
 
 
@@ -66,44 +66,60 @@ public class UpdateDataActivity  extends FragmentActivity implements OnMapReadyC
 
         protected String doInBackground(String... urls) {
             try {
-                Document doc = Jsoup.connect("http://chmielowa-dolina.ontap.pl/").get();
-                Elements els = doc.getElementsByClass("panel-body cml_semi" );
-                for (Element beerContainer : els) {
+            for (String url : urls){
+                Log.i("podstrona on-tapa", (url));
 
-                    String imagStyle =  beerContainer.attr("style"); // You can put those two lines into one
-                    String imgBeta = imagStyle.split("\\(")[1] ; // TODO: Insert a check if a value is set
-                    String img = imgBeta.split("\\)")[0];
-                    Elements beerNameAndBrewery = beerContainer.getElementsByClass("cml_shadow");
+                Document doc = Jsoup.connect(url).get();
+                Elements els = doc.getElementsByClass("panel panel-default");
+                for (Element container : els) {
+                    //  String what = container.text();
+                    if (!container.getElementsByClass("panel-body cml_semi").isEmpty() &&
+                            !container.getElementsByClass("panel-body cml_semi").get(0).getElementsByClass("cml_shadow").get(0).select("span").first().text().contains("N/A") &&
+                            !container.getElementsByClass("panel-body cml_semi").get(0).attr("style").isEmpty()
+                            ) {
+                        Element beerContainer = container.getElementsByClass("panel-body cml_semi").get(0);
+                        String price = container.getElementsByClass("col-xs-5 white").text();
+
+                        String imagStyle = beerContainer.attr("style"); // You can put those two lines into one
+                        String imgBeta = imagStyle.split("\\(")[1]; // TODO: Insert a check if a value is set
+                        String img = imgBeta.split("\\)")[0];
+                        Elements beerNameAndBrewery = beerContainer.getElementsByClass("cml_shadow");
 
 
-                    String brewery = beerNameAndBrewery.get(0).getElementsByClass("brewery").text();
-                    String nameHtml = beerNameAndBrewery.get(0).select("span").first().html();
-                    String[] textSplitResult = nameHtml.split("<br>");
-                    String name = textSplitResult[1].split("<")[0];
-                    String kind = beerNameAndBrewery.get(1).select("b").first().text();
-                    Log.i("etykietka", (img));
-                    Log.i("browarek", (brewery));
-                    Log.i("piwerko", (name));
-                    Log.i("gatuneczek", (kind));
+                        String brewery = beerNameAndBrewery.get(0).getElementsByClass("brewery").text();
+                        String nameHtml = beerNameAndBrewery.get(0).select("span").first().html();
+                        String[] textSplitResult = nameHtml.split("<br>");
+                        String name = textSplitResult[1].split("<")[0];
+                        String kind = beerNameAndBrewery.get(1).select("b").first().text();
+                        Log.i("etykietka", (img));
+                        Log.i("browarek", (brewery));
+                        Log.i("piwerko", (name));
+                        Log.i("gatuneczek", (kind));
+                        Log.i("cenusia", (price));
+                        //     Log.i("pitole", (what));
 
-                    for (Element help : beerNameAndBrewery){
-                        Log.i("main", (help.toString()));
-
-                    }
+//                    for (Element help : beerNameAndBrewery){
+//                        Log.i("main", (help.toString()));
+//
+//                    }
 
 //                    log("%s\n\t%s",
 //                            headline.attr("title"), headline.absUrl("href"));
-                    Log.i("main", (beerContainer.toString()));
+//                    Log.i("main", (beerContainer.toString()));
+                    }
                 }
 
-                Log.i("main", (doc.title()));
-                return doc.title();
+
+//                Log.i("main", (doc.title()));
+            }
+                return "ok";
             } catch (IOException e) {
                 this.exception = e;
 
                 return null;
             }
-        }
+            }
+
 
         protected void onPostExecute(String feed) {
             // TODO: check this.exception
