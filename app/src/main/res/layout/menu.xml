@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:padding="10dp"
+    tools:context="com.example.prusak.happyhourtrail.MainActivity">
+
+    <!--<include-->
+    <!--android:id="@+id/layout_user_info"-->
+    <!--layout="@layout/include_user_info"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_update"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="127dp"
+        android:text="@string/search"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="138dp"
+        android:text="@string/update"
+        android:textAllCaps="false" />
+
+    <!--<Button-->
+    <!--android:id="@+id/button_my_advers"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_need_help"-->
+    <!--android:text="@string/my_advers"-->
+    <!--android:textAllCaps="false" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button_edit_profile"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_my_advers"-->
+    <!--android:text="@string/edit_profile"-->
+    <!--android:textAllCaps="false" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button_settings"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_edit_profile"-->
+    <!--android:text="@string/settings"-->
+    <!--android:textAllCaps="false" />-->
+
+</RelativeLayout>

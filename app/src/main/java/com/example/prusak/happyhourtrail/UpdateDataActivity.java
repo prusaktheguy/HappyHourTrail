@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,36 +34,34 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by Prusak on 2018-01-04.
  */
 
-public class UpdateDataActivity  extends FragmentActivity implements OnMapReadyCallback {
+public class UpdateDataActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private GoogleMap mMap;
-
+  //  private GoogleMap mMap;
+  private Button returnButton;
+  private TextView statusText;
+  private static String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i("scrappr", ("jestesmy w scrapperze"));
+        setContentView(R.layout.activity_update);
 //        startActivity(new Intent(MainActivity.this, UserMainActivity.class));
+        returnButton = findViewById(R.id.menu_return_button);
+        statusText = findViewById(R.id.update_status_label);
+        returnButton.setOnClickListener(this);
+
         new RetrieveFeedTask().execute("http://chmielowa-dolina.ontap.pl/","http://kij.ontap.pl/","http://piw-paw-lodz.ontap.pl/","http://piwoteka-narodowa.ontap.pl/","http://z-innej-beczki.ontap.pl/");
-
-
-
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onClick(View view) {
+        if(status.equals("ok")){
+            startActivity(new Intent(UpdateDataActivity.this, MainActivity.class));
+        }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -116,7 +118,10 @@ public class UpdateDataActivity  extends FragmentActivity implements OnMapReadyC
             } catch (IOException e) {
                 this.exception = e;
 
-                return null;
+                return "bad IO";
+            } catch (Exception e) {
+                this.exception = e;
+                return "very bad";
             }
             }
 
@@ -125,6 +130,14 @@ public class UpdateDataActivity  extends FragmentActivity implements OnMapReadyC
             // TODO: check this.exception
             // TODO: do something with the feed
             Log.i("main", "znowu : "+ feed);
+            if(feed.equals("ok")){
+                status = "ok";
+                statusText.setText(R.string.aktualizacjaOK);
+
+            }else{
+                status = "bad";
+                statusText.setText(R.string.aktualizacja_blad);
+            }
         }
     }
 }

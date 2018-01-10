@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,23 +28,26 @@ import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener    {
 
-    private GoogleMap mMap;
+    private Button searchButton;
+    private Button updateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.menu);
 
-//        try {
-//            Document doc = Jsoup.connect("http://chmielowa-dolina.ontap.pl/").get();
-//            Log.i("main",  (doc.title()));
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        startActivity(new Intent(MainActivity.this, UpdateDataActivity.class));
+        searchButton = findViewById(R.id.button_search);
+        updateButton = findViewById(R.id.button_update);
+
+        searchButton.setOnClickListener(this);
+        updateButton.setOnClickListener(this);
+
+        Log.i("menu", ("jestesmy w menu"));
+
+
+
 
 
 
@@ -51,6 +56,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 //                .findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.button_search) {
+            Log.i("map", ("chcemy być w mapie"));
+            startActivity(new Intent(MainActivity.this, MapActivity.class));
+        } else if (i == R.id.button_update) {
+            Log.i("scrappr", ("chcemy być w scrapperze"));
+            startActivity(new Intent(MainActivity.this, UpdateDataActivity.class));
+        }
     }
 
 
@@ -63,15 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
 
 
 }
