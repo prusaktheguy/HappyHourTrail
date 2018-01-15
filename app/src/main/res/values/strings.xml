@@ -7,4 +7,5 @@
     <string name="title_location_permission">udostępnij lokalizację</string>
     <string name="text_location_permission">Czy Chcesz udostępnić swoją lokalizację ?</string>
     <string name="ok">ok</string>
+    <string name="error_required">To pole jest wymagane</string>
 </resources>

@@ -49,6 +49,8 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
 //        startActivity(new Intent(MainActivity.this, UserMainActivity.class));
         returnButton = findViewById(R.id.menu_return_button);
         statusText = findViewById(R.id.update_status_label);
+        status="";
+        returnButton.setClickable(false);
         returnButton.setOnClickListener(this);
 
         new RetrieveFeedTask().execute("http://chmielowa-dolina.ontap.pl/","http://kij.ontap.pl/","http://piw-paw-lodz.ontap.pl/","http://piwoteka-narodowa.ontap.pl/","http://z-innej-beczki.ontap.pl/");
@@ -56,7 +58,7 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        if(status.equals("ok")){
+        if(!status.isEmpty()){
             startActivity(new Intent(UpdateDataActivity.this, MainActivity.class));
         }
 
@@ -133,11 +135,11 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
             if(feed.equals("ok")){
                 status = "ok";
                 statusText.setText(R.string.aktualizacjaOK);
-
             }else{
                 status = "bad";
                 statusText.setText(R.string.aktualizacja_blad);
             }
+            returnButton.setClickable(true);
         }
     }
 }
