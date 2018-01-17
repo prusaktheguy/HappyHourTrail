@@ -31,8 +31,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private EditText email;
     private EditText password;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +112,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void onAuthSuccess(FirebaseUser user) {
         // Go to MainActivity
-        startActivity(new Intent(MainActivity.this, MenuActivity.class));
+        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                type = dataSnapshot.child("type").getValue(String.class);
+                Log.i("logowanie", type);
+
+                if(type.equals("admin")){
+                    startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("logowanie", "onCancelled", databaseError.toException());
+            }
+        });
+    //    startActivity(new Intent(MainActivity.this, MenuActivity.class));
         finish();
     }
     private void logIn() {

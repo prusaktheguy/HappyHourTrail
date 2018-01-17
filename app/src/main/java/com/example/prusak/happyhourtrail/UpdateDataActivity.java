@@ -3,32 +3,26 @@ package com.example.prusak.happyhourtrail;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.prusak.happyhourtrail.models.Beer;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import static com.example.prusak.happyhourtrail.Constants.onTapPubsNames;
 
 /**
  * Created by Prusak on 2018-01-04.
@@ -40,12 +34,15 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
   private Button returnButton;
   private TextView statusText;
   private static String status;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("scrappr", ("jestesmy w scrapperze"));
         setContentView(R.layout.activity_update);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
 //        startActivity(new Intent(MainActivity.this, UserMainActivity.class));
         returnButton = findViewById(R.id.menu_return_button);
         statusText = findViewById(R.id.update_status_label);
@@ -53,13 +50,13 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
         returnButton.setClickable(false);
         returnButton.setOnClickListener(this);
 
-        new RetrieveFeedTask().execute("http://chmielowa-dolina.ontap.pl/","http://kij.ontap.pl/","http://piw-paw-lodz.ontap.pl/","http://piwoteka-narodowa.ontap.pl/","http://z-innej-beczki.ontap.pl/");
+        new RetrieveFeedTask().execute(Constants.onTapUrls);
     }
 
     @Override
     public void onClick(View view) {
         if(!status.isEmpty()){
-            startActivity(new Intent(UpdateDataActivity.this, MainActivity.class));
+            startActivity(new Intent(UpdateDataActivity.this, MenuActivity.class));
         }
 
     }
@@ -70,8 +67,10 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
 
         protected String doInBackground(String... urls) {
             try {
+                int pubNumber=0;
             for (String url : urls){
                 Log.i("podstrona on-tapa", (url));
+                mDatabase.child("pubs").child(onTapPubsNames[pubNumber]).removeValue();
 
                 Document doc = Jsoup.connect(url).get();
                 Elements els = doc.getElementsByClass("panel panel-default");
@@ -95,6 +94,7 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
                         String[] textSplitResult = nameHtml.split("<br>");
                         String name = textSplitResult[1].split("<")[0];
                         String kind = beerNameAndBrewery.get(1).select("b").first().text();
+                        Log.i("jaki pub : ", (onTapPubsNames[pubNumber]));
                         Log.i("etykietka", (img));
                         Log.i("browarek", (brewery));
                         Log.i("piwerko", (name));
@@ -102,19 +102,20 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
                         Log.i("cenusia", (price));
                         //     Log.i("pitole", (what));
 
-//                    for (Element help : beerNameAndBrewery){
-//                        Log.i("main", (help.toString()));
-//
-//                    }
+                        String key = mDatabase.child("pubs").child(onTapPubsNames[pubNumber]).push().getKey();
+//                        String key = mDatabase.child("pubs").push().getKey();
+                        Beer beer = new Beer(key, img, brewery, name, kind, price);
+                        Map<String, Object> beerValues = beer.toMap();
 
-//                    log("%s\n\t%s",
-//                            headline.attr("title"), headline.absUrl("href"));
-//                    Log.i("main", (beerContainer.toString()));
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put("/pubs/" + onTapPubsNames[pubNumber] + "/" + name, beerValues);
+
+                        mDatabase.updateChildren(childUpdates);
+
+
                     }
                 }
-
-
-//                Log.i("main", (doc.title()));
+                pubNumber++;
             }
                 return "ok";
             } catch (IOException e) {
@@ -138,6 +139,8 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
             }else{
                 status = "bad";
                 statusText.setText(R.string.aktualizacja_blad);
+                Log.i("main", "blad : "+ exception);
+
             }
             returnButton.setClickable(true);
         }
