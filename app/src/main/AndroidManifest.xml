@@ -39,6 +39,9 @@
         <activity
             android:name=".MapActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignUpAcitivity"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_ic_notification" />

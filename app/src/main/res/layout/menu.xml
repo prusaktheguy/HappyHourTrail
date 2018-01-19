@@ -38,6 +38,16 @@
         android:text="@string/update"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/log_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_search"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="95dp"
+        android:text="log out"
+        android:textSize="9sp" />
+
     <!--<Button-->
     <!--android:id="@+id/button_my_advers"-->
     <!--android:layout_width="match_parent"-->

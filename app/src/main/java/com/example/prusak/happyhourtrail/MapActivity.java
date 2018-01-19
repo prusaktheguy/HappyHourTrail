@@ -45,7 +45,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     GoogleApiClient mGoogleApiClient;
     protected static Location mLastLocation;
     static Marker marker;
-
+    static boolean isAccepted = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +123,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 ActivityCompat.requestPermissions(MapActivity.this,
                                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION);
+                                isAccepted = true;
                             }
                         })
                         .create()
@@ -135,7 +136,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
-            return false;
+            return isAccepted;
         } else {
             return true;
         }

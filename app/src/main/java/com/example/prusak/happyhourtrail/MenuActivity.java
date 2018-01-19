@@ -20,6 +20,7 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
 
         private Button searchButton;
         private Button updateButton;
+        private Button logOutButton;
         private DatabaseReference mDatabase;
         private FirebaseAuth mAuth;
 
@@ -32,8 +33,10 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
 //            mAuth = FirebaseAuth.getInstance();
             searchButton = findViewById(R.id.button_search);
             updateButton = findViewById(R.id.button_update);
+            logOutButton = findViewById(R.id.log_out_button);
 
             searchButton.setOnClickListener(this);
+            logOutButton.setOnClickListener(this);
             updateButton.setOnClickListener(this);
 
             Log.i("menu", ("jestesmy w menu"));
@@ -59,6 +62,10 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
             } else if (i == R.id.button_update) {
                 Log.i("scrappr", ("chcemy być w scrapperze"));
                 startActivity(new Intent(MenuActivity.this, UpdateDataActivity.class));
+            }else if (i == R.id.log_out_button) {
+                Log.i("logowanie", ("wylogoawnie z menu"));
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MenuActivity.this, MainActivity.class));
             }
         }
 

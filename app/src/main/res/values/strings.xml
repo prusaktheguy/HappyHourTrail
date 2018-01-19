@@ -8,4 +8,7 @@
     <string name="text_location_permission">Czy Chcesz udostępnić swoją lokalizację ?</string>
     <string name="ok">ok</string>
     <string name="error_required">To pole jest wymagane</string>
+    <string name="error_password_invalid">one digit, one lowercase, one uppercase, 6-20</string>
+    <string name="error_email_invalid">Podaj poprawny email</string>
+    <string name="error_password_not_same">hasła muszą być identyczne</string>
 </resources>

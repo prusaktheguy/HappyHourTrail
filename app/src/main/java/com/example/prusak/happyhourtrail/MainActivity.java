@@ -44,6 +44,7 @@ import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -53,6 +54,8 @@ import javax.xml.parsers.SAXParserFactory;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener    {
 
     private Button loginButton;
+    private Button guestButton;
+    private Button signupButton;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -73,9 +76,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginButton = findViewById(R.id.loginButton);
         email = findViewById(R.id.emailForm);
         password = findViewById(R.id.passwordForm);
-
+        signupButton =findViewById(R.id.signup_Button);
+        guestButton =findViewById(R.id.guest_button);
 
         loginButton.setOnClickListener(this);
+        signupButton.setOnClickListener(this);
+        guestButton.setOnClickListener(this);
 
 
 
@@ -96,12 +102,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.i("login", ("chcemy być w menu zalogowani"));
             logIn();
         }
+        if (i == R.id.signup_Button) {
+            Log.i("login", ("chcemy być w rejestracji"));
+            signup();
+        }
+        if (i == R.id.guest_button) {
+            Log.i("login", ("chcemy być w menu niezalogowani"));
+            startActivity(new Intent(MainActivity.this, MenuActivity.class));
+        }
     }
 
+    public void signup(){
+        startActivity(new Intent(MainActivity.this, SignUpAcitivity.class));
+    }
 
     @Override
     public void onStart() {
         super.onStart();
+        FirebaseAuth.getInstance().signOut();
         if (mAuth.getCurrentUser() != null) {
             onAuthSuccess(mAuth.getCurrentUser());
         }
@@ -120,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if(type.equals("admin")){
                     startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                }
+                if(type.equals("user")){
+                    startActivity(new Intent(MainActivity.this, MapActivity.class));
                 }
             }
 
