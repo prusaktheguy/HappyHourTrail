@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.example.prusak.happyhourtrail.models.Pub;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -27,29 +30,50 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Prusak on 2018-01-07.
  */
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback ,
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-         {
+        GoogleApiClient.OnConnectionFailedListener {
 
+
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
     protected static Location mLastLocation;
-    static Marker marker;
+    static Marker m;
     static boolean isAccepted = false;
+    static public Map<String, String> pubs= new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("mapa", ("jestesmy w mapie"));
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        getPubLocactions();
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -75,23 +99,61 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             return;
         }
         if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
+            Geocoder coder = new Geocoder(this);
+            List<Address> address;
+            for (Map.Entry<String, String> entry : pubs.entrySet()){
+
+                try {
+                    address = coder.getFromLocationName(entry.getValue(),5);
+                    if (address!=null) {
+                        Address location=address.get(0);
+                        MarkerOptions a = new MarkerOptions()
+                                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                                .title(entry.getKey())
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beer));
+
+                        mMap.addMarker(a);
+                        Log.w("mapa", "lokacja ok : " + entry.getValue());
+
+                    }else {
+                        Log.w("mapa", "problem z lokacja : " + entry.getValue());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
 
-                mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
+
+            }
+
+
+
+                mMap.setMyLocationEnabled(true);
+
+            if (mLastLocation != null) {
+                MarkerOptions a = new MarkerOptions()
+                        .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                m = mMap.addMarker(a);
+
+            }
+
+
+            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
 
                 @Override
                 public void onMyLocationChange(Location arg0) {
                     // TODO Auto-generated method stub
 
 //                    mMap.addMarker(new MarkerOptions().position(new LatLng(arg0.getLatitude(), arg0.getLongitude())).title("It's Me!"));
-                    Log.i("marker", ("marker to")+marker);
-                    if(marker!=null){
-                        marker.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
-                        animateMarker(marker,new LatLng(arg0.getLatitude(), arg0.getLongitude()),false);
-                    }
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(arg0.getLatitude(), arg0.getLongitude()), 15.5f));
+                    Log.i("marker", ("marker to") + m);
+                    m.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
+//                    if(marker!=null){
+//                        marker.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
+//                        animateMarker(marker,new LatLng(arg0.getLatitude(), arg0.getLongitude()),false);
+//                    }
+                  //  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(arg0.getLatitude(), arg0.getLongitude()), 15.5f));
 
 
                 }
@@ -99,6 +161,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         }
     }
+
     public boolean checkLocationPermission() {
 
 
@@ -202,7 +265,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 Log.i("map", "start location not null");
                 if (mMap != null) {
                     Log.i("map", "moja lokacja przetwarzaj");
-                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).title("It's Me!"));
+                    MarkerOptions a = new MarkerOptions()
+                            .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                    m = mMap.addMarker(a);
+                    m.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+
+//                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).title("It's Me!"));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15.5f));
 
                 }
@@ -215,14 +283,55 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-             @Override
-             public void onConnectionSuspended(int i) {
+    @Override
+    public void onConnectionSuspended(int i) {
 
-             }
+    }
 
 
-             @Override
-             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-             }
-         }
+    }
+
+
+    public void getPubLocactions(){
+
+
+        mDatabase.child("pubs").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        pubs.put(String.valueOf(dsp.child("nazwa").getValue(String.class)),String.valueOf(dsp.child("lokalizacja").getValue(String.class)));
+
+                }
+                Log.i("mapa", " pubs locations"+ pubs.toString() );
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("mapa", "onCancelled pubs location", databaseError.toException());
+            }
+        });
+
+        Log.i("mapa", " pubs locations"+ pubs.toString() );
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}

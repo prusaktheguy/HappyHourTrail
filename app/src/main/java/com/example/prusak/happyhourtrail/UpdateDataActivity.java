@@ -70,8 +70,7 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
                 int pubNumber=0;
             for (String url : urls){
                 Log.i("podstrona on-tapa", (url));
-                mDatabase.child("pubs").child(onTapPubsNames[pubNumber]).removeValue();
-
+                mDatabase.child("pubs").child(onTapPubsNames[pubNumber]).child("beers").removeValue();
                 Document doc = Jsoup.connect(url).get();
                 Elements els = doc.getElementsByClass("panel panel-default");
                 for (Element container : els) {
@@ -108,7 +107,7 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
                         Map<String, Object> beerValues = beer.toMap();
 
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put("/pubs/" + onTapPubsNames[pubNumber] + "/" + name, beerValues);
+                        childUpdates.put("/pubs/" + onTapPubsNames[pubNumber] + "/" + "beers"+"/"+ name, beerValues);
 
                         mDatabase.updateChildren(childUpdates);
 
