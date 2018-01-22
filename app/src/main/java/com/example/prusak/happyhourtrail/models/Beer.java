@@ -1,5 +1,7 @@
 package com.example.prusak.happyhourtrail.models;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.Exclude;
 
@@ -20,6 +22,8 @@ public class Beer {
     public String nazwa;
     public String gatunek;
     public String cena;
+    @Exclude
+    public Bitmap img;
 
 
     public Beer(String uid, String etykieta, String browar, String nazwa, String gatunek, String cena) {
@@ -29,6 +33,18 @@ public class Beer {
         this.nazwa = nazwa;
         this.gatunek = gatunek;
         this.cena = cena;
+    }
+    public Beer(){
+
+    }
+    @Exclude
+    @Override
+    public String toString(){
+        String data = nazwa;
+        return data;
+
+
+
     }
 
     @Exclude

@@ -1,6 +1,7 @@
 package com.example.prusak.happyhourtrail;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,15 +16,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.prusak.happyhourtrail.models.Pub;
+import com.example.prusak.happyhourtrail.models.Beer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,7 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Prusak on 2018-01-07.
@@ -54,7 +55,7 @@ import java.util.TreeMap;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,GoogleMap.OnMarkerClickListener {
 
 
     private DatabaseReference mDatabase;
@@ -66,6 +67,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     static Marker m;
     static boolean isAccepted = false;
     static public Map<String, String> pubs= new HashMap<>();
+    static public Map<String, ArrayList<Beer>> pubBeers= new HashMap<>();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +78,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         getPubLocactions();
-
+        getPubMenu();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -122,42 +127,51 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     e.printStackTrace();
                 }
 
-
-
-
-
             }
 
-
-
-                mMap.setMyLocationEnabled(true);
-
-            if (mLastLocation != null) {
-                MarkerOptions a = new MarkerOptions()
-                        .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-                m = mMap.addMarker(a);
-
-            }
-
-
-            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                 @Override
-                public void onMyLocationChange(Location arg0) {
+                public void onInfoWindowClick(Marker arg0) {
                     // TODO Auto-generated method stub
-
-//                    mMap.addMarker(new MarkerOptions().position(new LatLng(arg0.getLatitude(), arg0.getLongitude())).title("It's Me!"));
-                    Log.i("marker", ("marker to") + m);
-                    m.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
-//                    if(marker!=null){
-//                        marker.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
-//                        animateMarker(marker,new LatLng(arg0.getLatitude(), arg0.getLongitude()),false);
-//                    }
-                  //  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(arg0.getLatitude(), arg0.getLongitude()), 15.5f));
-
+                    Intent i = new Intent(MapActivity.this,
+                            Popup.class);
+                    i.putExtra("nazwa", arg0.getTitle());
+                    startActivity(i);
+                    //here pass your data in intent
 
                 }
             });
+
+                mMap.setMyLocationEnabled(true);
+
+//            if (mLastLocation != null) {
+//                MarkerOptions a = new MarkerOptions()
+//                        .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+//                m = mMap.addMarker(a);
+//
+//            }
+
+//
+//            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+//
+//                @Override
+//                public void onMyLocationChange(Location arg0) {
+//                    // TODO Auto-generated method stub
+//
+////                    mMap.addMarker(new MarkerOptions().position(new LatLng(arg0.getLatitude(), arg0.getLongitude())).title("It's Me!"));
+//                    Log.i("marker", ("marker to") + m);
+//                    m.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
+////                    if(marker!=null){
+////                        marker.setPosition(new LatLng(arg0.getLatitude(), arg0.getLongitude()));
+////                        animateMarker(marker,new LatLng(arg0.getLatitude(), arg0.getLongitude()),false);
+////                    }
+//                  //  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(arg0.getLatitude(), arg0.getLongitude()), 15.5f));
+//
+//
+//                }
+//            });
 
         }
     }
@@ -265,10 +279,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 Log.i("map", "start location not null");
                 if (mMap != null) {
                     Log.i("map", "moja lokacja przetwarzaj");
-                    MarkerOptions a = new MarkerOptions()
-                            .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-                    m = mMap.addMarker(a);
-                    m.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+//                    MarkerOptions a = new MarkerOptions()
+//                            .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+//                    m = mMap.addMarker(a);
+//                    m.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
 
 //                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())).title("It's Me!"));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15.5f));
@@ -322,6 +336,48 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     }
+    public void getPubMenu(){
+
+
+        mDatabase.child("pubs").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        ArrayList<Beer> beers = new ArrayList<>();
+                        for(DataSnapshot beerDSP : dsp.child("beers").getChildren()){
+                            beers.add(beerDSP.getValue(Beer.class));
+
+                        }
+                            pubBeers.put(String.valueOf(dsp.child("nazwa").getValue(String.class)), beers);
+                }
+                Log.i("mapa", " pubs beers"+ pubBeers.toString() );
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("mapa", "onCancelled pubs beers", databaseError.toException());
+            }
+        });
+
+//        Log.i("mapa", " pubs beers"+ pubBeers.toString() );
+
+
+    }
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(marker!=m){
+
+        }
+
+
+
+        return false;
+    }
 
 
 
@@ -334,4 +390,125 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
 
-}
+
+
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private View view;
+        TextView nameView;
+        TextView addressView;
+        ImageView imageView;
+        private Context context;
+
+        public CustomInfoWindowAdapter(Context context) {
+            view = getLayoutInflater().inflate(R.layout.custom_info_window,
+                    null);
+            this.context = context;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+//
+//            if (MapActivity.this.marker != null
+//                    && MapActivity.this.marker.isInfoWindowShown()) {
+//                MapActivity.this.marker.hideInfoWindow();
+//                MapActivity.this.marker.showInfoWindow();
+//            }
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(final Marker marker) {
+//            MainActivity.this.marker = marker;
+//
+
+            addressView = (TextView) view.findViewById(R.id.address);
+            nameView = (TextView) view.findViewById(R.id.nazwaPubu);
+            imageView = (ImageView) view.findViewById(R.id.logo);
+                    imageView.setImageDrawable(getDrawable(R.drawable.beer));
+            String address;
+            for (Map.Entry<String, String> entry : pubs.entrySet()) {
+                if (marker.getTitle().equals(entry.getKey())) {
+                    address = entry.getValue();
+                    addressView.setText(address);
+                    nameView.setText(entry.getKey());
+
+
+                }
+            }
+
+
+
+            return view;
+        }
+
+
+//                    new ArrayList<Beer>()
+
+//            if (marker.getId() != null && markers != null && markers.size() > 0) {
+//                if ( markers.get(marker.getId()) != null &&
+//                        markers.get(marker.getId()) != null) {
+//                    url = markers.get(marker.getId());
+//                }
+//            }
+//            final ImageView image = ((ImageView) view.findViewById(R.id.badge));
+
+//            if (url != null && !url.equalsIgnoreCase("null")
+//                    && !url.equalsIgnoreCase("")) {
+//                imageLoader.displayImage(url, image, options,
+//                        new SimpleImageLoadingListener() {
+//                            @Override
+//                            public void onLoadingComplete(String imageUri,
+//                                                          View view, Bitmap loadedImage) {
+//                                super.onLoadingComplete(imageUri, view,
+//                                        loadedImage);
+//                                getInfoContents(marker);
+//                            }
+//                        });
+//            } else {
+//                image.setImageResource(R.drawable.ic_launcher);
+//            }
+
+//            final String title = marker.getTitle();
+//            final TextView titleUi = ((TextView) view.findViewById(R.id.title));
+//            if (title != null) {
+//                titleUi.setText(title);
+//            } else {
+//                titleUi.setText("");
+//            }
+//
+//            final String snippet = marker.getSnippet();
+//            final TextView snippetUi = ((TextView) view
+//                    .findViewById(R.id.snippet));
+//            if (snippet != null) {
+//                snippetUi.setText(snippet);
+//            } else {
+//                snippetUi.setText("");
+//            }
+
+
+    }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

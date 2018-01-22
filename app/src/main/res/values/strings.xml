@@ -11,4 +11,9 @@
     <string name="error_password_invalid">one digit, one lowercase, one uppercase, 6-20</string>
     <string name="error_email_invalid">Podaj poprawny email</string>
     <string name="error_password_not_same">hasła muszą być identyczne</string>
+    <string name="back">zamknij</string>
+    <string name="beerName">nazwa</string>
+    <string name="gatunek">gatunek</string>
+    <string name="browar">browar</string>
+    <string name="cena">cena</string>
 </resources>
