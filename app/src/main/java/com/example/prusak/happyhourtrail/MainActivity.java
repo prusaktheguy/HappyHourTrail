@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(type.equals("user")){
                     startActivity(new Intent(MainActivity.this, MapActivity.class));
                 }
+                if(type.equals("pub")){
+                    startActivity(new Intent(MainActivity.this, MenuActivityPubWorker.class));
+                }
             }
 
             @Override

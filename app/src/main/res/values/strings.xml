@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">HappyHourTrail</string>
-    <string name="search">Szukaj Pubu</string>
+    <string name="search">Szukaj Pubów</string>
     <string name="update">Aktualizuj dane</string>
     <string name="aktualizacjaOK">Zaktualizowano !</string>
     <string name="aktualizacja_blad">Wystąpił Błąd, ponów próbę !</string>
@@ -20,4 +20,8 @@
     <string name="rate">Oceń pub</string>
     <string name="report_pub">Zgłoś nieaktulną ofertę</string>
     <string name="rate_text">Oceń pub</string>
+    <string name="basicReport">Tu zdefiniuj problem</string>
+    <string name="report_desc">Opisz na czym polegał problem z ofertą</string>
+    <string name="edit_pub_menu">Edytuj Ofertę Pubu</string>
+    <string name="add_promo">Dodaj Promocję</string>
 </resources>

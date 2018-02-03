@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:padding="10dp"
+    tools:context="com.example.prusak.happyhourtrail.MenuActivity">
+
+    <!--<include-->
+    <!--android:id="@+id/layout_user_info"-->
+    <!--layout="@layout/include_user_info"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editPubMenu"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="69dp"
+        android:text="@string/search"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/editPubMenu"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/button_search"
+        android:layout_centerVertical="true"
+        android:text="@string/edit_pub_menu"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/add_promo_button"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editPubMenu"
+        android:layout_below="@+id/editPubMenu"
+        android:layout_marginTop="74dp"
+        android:text="@string/add_promo"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/log_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="23dp"
+        android:text="log out"
+        android:textSize="9sp" />
+
+    <!--<Button-->
+    <!--android:id="@+id/button_my_advers"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_need_help"-->
+    <!--android:text="@string/my_advers"-->
+    <!--android:textAllCaps="false" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button_edit_profile"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_my_advers"-->
+    <!--android:text="@string/edit_profile"-->
+    <!--android:textAllCaps="false" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button_settings"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/button_edit_profile"-->
+    <!--android:text="@string/settings"-->
+    <!--android:textAllCaps="false" />-->
+
+</RelativeLayout>

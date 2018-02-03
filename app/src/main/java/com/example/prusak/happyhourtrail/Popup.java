@@ -2,6 +2,7 @@ package com.example.prusak.happyhourtrail;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -264,14 +265,17 @@ public class Popup extends Activity implements View.OnClickListener  {
         }
         if ( i==R.id.rate) {
             Log.i("login", ("chcemy ocenic uzytkownika"));
-            finish();
+//            finish();
         }
         if ( i==R.id.report) {
             Log.i("login", ("chcemy zaraportowac pub"));
+            Intent intent = new Intent(Popup.this,
+                    Report.class);
+            intent.putExtra("nazwa", pubName);
+            startActivity(intent);
 
 
-
-            finish();
+//            finish();
         }
     }
 

@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -157,7 +158,10 @@ public class SignUpAcitivity extends AppCompatActivity implements View.OnClickLi
                     startActivity(new Intent(SignUpAcitivity.this, MenuActivity.class));
                 }
                 if(type.equals("user")){
-                    startActivity(new Intent(SignUpAcitivity.this, MenuActivity.class));
+                    startActivity(new Intent(SignUpAcitivity.this, MapActivity.class));
+                }
+                if(type.equals("pub")){
+                    startActivity(new Intent(SignUpAcitivity.this, MenuActivityPubWorker.class));
                 }
             }
 
