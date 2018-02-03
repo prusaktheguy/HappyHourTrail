@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.loginButton) {
-            Log.i("login", ("chcemy być w menu zalogowani"));
+            Log.i("login", ("chcemy być w menu_admin zalogowani"));
             logIn();
         }
         if (i == R.id.signup_Button) {
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signup();
         }
         if (i == R.id.guest_button) {
-            Log.i("login", ("chcemy być w menu niezalogowani"));
+            Log.i("login", ("chcemy być w menu_admin niezalogowani"));
             startActivity(new Intent(MainActivity.this, MenuActivity.class));
         }
     }

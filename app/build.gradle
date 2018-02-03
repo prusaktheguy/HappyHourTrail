@@ -59,6 +59,8 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'app.youkai.simpleratingview:library:1.0.0'
+    compile 'com.github.sujithkanna:smileyrating:1.6.8'
 
 
 }

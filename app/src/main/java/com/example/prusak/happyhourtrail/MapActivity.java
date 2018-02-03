@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prusak.happyhourtrail.models.Beer;
+import com.example.prusak.happyhourtrail.models.Pub;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -40,8 +41,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +71,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     static boolean isAccepted = false;
     static public Map<String, String> pubs= new HashMap<>();
     static public Map<String, ArrayList<Beer>> pubBeers= new HashMap<>();
-
+    public static  Map<String, Float> marksCount= new HashMap<>();
+    public static  Map<String, Float> average= new HashMap<>();
+    public static  Map<String, String> logos= new HashMap<>();
+    public static  Map<String, String> promotionss= new HashMap<>();
 
 
     @Override
@@ -79,6 +85,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mAuth = FirebaseAuth.getInstance();
         getPubLocactions();
         getPubMenu();
+        for(String pubik : Constants.onTapPubsNames) {
+            getRatingCount(pubik);
+            getRating(pubik);
+        }
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -318,7 +328,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        pubs.put(String.valueOf(dsp.child("nazwa").getValue(String.class)),String.valueOf(dsp.child("lokalizacja").getValue(String.class)));
+                        pubs.put(dsp.child("nazwa").getValue(String.class),dsp.child("lokalizacja").getValue(String.class));
 
                 }
                 Log.i("mapa", " pubs locations"+ pubs.toString() );
@@ -397,6 +407,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         private View view;
         TextView nameView;
         TextView addressView;
+        TextView rate;
+        TextView promotion;
+        TextView count;
         ImageView imageView;
         private Context context;
 
@@ -424,15 +437,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             addressView = (TextView) view.findViewById(R.id.address);
             nameView = (TextView) view.findViewById(R.id.nazwaPubu);
+            rate = (TextView) view.findViewById(R.id.Rate);
+            promotion = (TextView) view.findViewById(R.id.activePromo);
+            count = (TextView) view.findViewById(R.id.OpinionCount);
             imageView = (ImageView) view.findViewById(R.id.logo);
-                    imageView.setImageDrawable(getDrawable(R.drawable.beer));
+
+            imageView.setImageDrawable(getDrawable(R.drawable.beer));
             String address;
             for (Map.Entry<String, String> entry : pubs.entrySet()) {
                 if (marker.getTitle().equals(entry.getKey())) {
+
                     address = entry.getValue();
                     addressView.setText(address);
                     nameView.setText(entry.getKey());
-
+                    rate.setText(String.valueOf("average: " + average.get(entry.getKey()) ));
+                    count.setText(String.valueOf("count: " +marksCount.get(entry.getKey())));
+                    promotion.setText(promotionss.get(entry.getKey()));
+                    Picasso.with(MapActivity.this).load(logos.get(entry.getKey())).into(imageView);
 
                 }
             }
@@ -485,6 +506,66 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //            } else {
 //                snippetUi.setText("");
 //            }
+
+
+    }
+
+
+
+
+
+    public void getRating(final String pub) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("pubs").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot dsp = dataSnapshot.child(pub);
+                int zeros=  dsp.child("ocena0").getValue(int.class);
+                int ones=dsp.child("ocena1").getValue(int.class);
+                int twos=dsp.child("ocena2").getValue(int.class);
+                int threes=dsp.child("ocena3").getValue(int.class);
+                int fours=dsp.child("ocena4").getValue(int.class);
+                String promot="brak aktywnej promocji";
+                for(DataSnapshot dspPromo :   dsp.child("promotions").getChildren()){
+                    promot=dspPromo.getValue(String.class);
+                }
+                String logo = dsp.child("logo").getValue(String.class);
+                float count = zeros+ones+twos+threes+fours;
+                average.put( pub,((zeros+(ones*2)+(twos*3)+(threes*4)+(fours*5))/count));
+                logos.put(pub,logo);
+                promotionss.put(pub,promot);
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("mapa", "onCancelled pubs marks", databaseError.toException());
+            }
+        });
+
+    }
+    public void getRatingCount(final String pub) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("pubs").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot dsp = dataSnapshot.child(pub);
+                int zeros=  dsp.child("ocena0").getValue(int.class);
+                int ones=dsp.child("ocena1").getValue(int.class);
+                int twos=dsp.child("ocena2").getValue(int.class);
+                int threes=dsp.child("ocena3").getValue(int.class);
+                int fours=dsp.child("ocena4").getValue(int.class);
+                marksCount.put( pub, (float) (zeros + ones + twos + threes + fours));
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("mapa", "onCancelled pubs marks", databaseError.toException());
+            }
+        });
 
 
     }

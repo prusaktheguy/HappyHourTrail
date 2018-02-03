@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Prusak on 2018-01-10.
@@ -27,7 +25,7 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.menu);
+            setContentView(R.layout.menu_admin);
 
 //            mDatabase = FirebaseDatabase.getInstance().getReference();
 //            mAuth = FirebaseAuth.getInstance();
@@ -39,7 +37,7 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
             logOutButton.setOnClickListener(this);
             updateButton.setOnClickListener(this);
 
-            Log.i("menu", ("jestesmy w menu"));
+            Log.i("menu", ("jestesmy w menu_admin"));
 
 
 
@@ -63,22 +61,13 @@ public class MenuActivity  extends AppCompatActivity implements View.OnClickList
                 Log.i("scrappr", ("chcemy być w scrapperze"));
                 startActivity(new Intent(MenuActivity.this, UpdateDataActivity.class));
             }else if (i == R.id.log_out_button) {
-                Log.i("logowanie", ("wylogoawnie z menu"));
+                Log.i("logowanie", ("wylogoawnie z menu_admin"));
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MenuActivity.this, MainActivity.class));
             }
         }
 
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera. In this case,
-         * we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to install
-         * it inside the SupportMapFragment. This method will only be triggered once the user has
-         * installed Google Play services and returned to the app.
-         */
 
 
 

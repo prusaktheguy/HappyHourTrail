@@ -16,4 +16,8 @@
     <string name="gatunek">gatunek</string>
     <string name="browar">browar</string>
     <string name="cena">cena</string>
+    <string name="report">Zgłoś nieaktualne dane</string>
+    <string name="rate">Oceń pub</string>
+    <string name="report_pub">Zgłoś nieaktulną ofertę</string>
+    <string name="rate_text">Oceń pub</string>
 </resources>

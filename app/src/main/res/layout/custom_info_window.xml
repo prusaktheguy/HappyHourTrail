@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/border3"
+    android:background="@drawable/border4"
 
     >
 
     <TextView
         android:id="@+id/nazwaPubu"
-        android:layout_width="109dp"
-        android:layout_height="81dp"
+        android:layout_width="69dp"
+        android:layout_height="61dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="nazwaPubu"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,12 +76,12 @@
     <TextView
         android:id="@+id/moreInfo"
         android:layout_width="203dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="232dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="224dp"
         android:gravity="center"
         android:text="click for more info"
         android:textColor="@android:color/white"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,10 +99,10 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="60dp"
-        android:layout_height="76dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="62dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/beer" />
