@@ -23,5 +23,7 @@
     <string name="basicReport">Tu zdefiniuj problem</string>
     <string name="report_desc">Opisz na czym polegał problem z ofertą</string>
     <string name="edit_pub_menu">Edytuj Ofertę Pubu</string>
+    <string name="accept_promo">Akceptuj Promocję</string>
     <string name="add_promo">Dodaj Promocję</string>
+    <string name="add_promo_title">podaj tytuł promocji</string>
 </resources>

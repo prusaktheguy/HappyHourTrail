@@ -53,6 +53,10 @@
             android:name=".Report"
             android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".PromoEdit"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_ic_notification" />

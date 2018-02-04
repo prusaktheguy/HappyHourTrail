@@ -143,7 +143,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(new Intent(MainActivity.this, MapActivity.class));
                 }
                 if(type.equals("pub")){
-                    startActivity(new Intent(MainActivity.this, MenuActivityPubWorker.class));
+                   String pubName = dataSnapshot.child("pubName").getValue(String.class);
+                    Intent i = new Intent(MainActivity.this,
+                            MenuActivityPubWorker.class);
+                    i.putExtra("nazwa", pubName);
+                    startActivity(i);
+
+//                    startActivity(new Intent(MainActivity.this, MenuActivityPubWorker.class));
                 }
             }
 
