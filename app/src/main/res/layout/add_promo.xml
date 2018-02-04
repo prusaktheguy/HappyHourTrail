@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@android:color/black">
 
     <Button
@@ -26,12 +26,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/add_promo_title"
-        android:textColor="@android:color/black"
-        android:inputType="textPersonName"
-        android:textSize="17sp"
         android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="@string/add_promo_title"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+        android:textSize="17sp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +44,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:scrollHorizontally="false"
         android:ems="10"
         android:gravity="top"
         android:inputType="textPersonName"
         android:text="tu wstaw opis promocji"
-        android:textColor="@android:color/black"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
         android:textSize="18sp"
 
         app:layout_constraintEnd_toEndOf="parent"

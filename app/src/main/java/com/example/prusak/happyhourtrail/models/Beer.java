@@ -59,6 +59,42 @@ public class Beer {
 
         return result;
     }
+    @Exclude
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Beer other = (Beer) obj;
+        if (nazwa == null) {
+            if (other.nazwa != null)
+                return false;
+        }
 
+        if(cena!=null && other.cena!=null){
+            if(!cena.equals(other.cena)){
+                return false;
+            }
+        }
+        if(browar!=null && other.browar!=null){
+            if(!browar.equals(other.browar)){
+                return false;
+            }
+        }
+        if(gatunek!=null && other.gatunek!=null){
+            if(!gatunek.equals(other.gatunek)){
+                return false;
+            }
+        }
+        if(nazwa!=null && other.nazwa!=null){
+            if(!nazwa.equals(other.nazwa)){
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.example.prusak.happyhourtrail;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -76,8 +77,10 @@ public class PromoEdit extends Activity implements View.OnClickListener  {
             Log.i("pubWorker", ("edycja/tworzenie promocji"));
             if(mAuth.getCurrentUser()==null){
                 Log.i("mapa", "gosc nie powinien tu byc");
-                finish();
+                Intent intent = new Intent(this,
+                        MainActivity.class);
 
+                startActivity(intent);
             }else{
                 Log.i("mapa", "user dodaje promocje");
                 if(originalpromoTitle!=null && !originalpromoTitle.equals(promotionTitleText.getText().toString())){
@@ -91,8 +94,12 @@ public class PromoEdit extends Activity implements View.OnClickListener  {
 
 
 
-            finish();
-        }
+            Intent intent = new Intent(this,
+                    MenuActivityPubWorker.class);
+           intent.putExtra("nazwa", pubName);
+//            intent.putExtra("promoTitle", "");
+//            intent.putExtra("promo", "");
+            startActivity(intent);        }
     }
 
 

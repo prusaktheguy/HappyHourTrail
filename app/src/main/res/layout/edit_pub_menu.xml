@@ -17,9 +17,10 @@
         android:id="@+id/promotionList"
         android:layout_width="match_parent"
         android:layout_height="222dp"
+        android:layout_above="@+id/addBeerButton"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/localization"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/locOk"
+        android:layout_marginTop="5dp"
         android:layout_weight="3"
         android:background="@android:color/white">
 
@@ -39,10 +40,9 @@
         android:id="@+id/backToWorkerMenu"
         android:layout_width="222dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/promotionList"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
-        android:text="wstecz"
+        android:text="WSTECZ"
         android:textAllCaps="false" />
 
     <Button
@@ -67,6 +67,7 @@
         android:id="@+id/localization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/locOk"
         android:layout_alignBottom="@+id/locOk"
         android:layout_alignParentStart="true"
         android:layout_marginStart="28dp"
@@ -74,6 +75,15 @@
         android:inputType="textPersonName"
         android:text="Lokalizacja"
         android:textColor="@color/cardview_light_background" />
+
+    <Button
+        android:id="@+id/addBeerButton"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/backToWorkerMenu"
+        android:layout_alignStart="@+id/backToWorkerMenu"
+        android:text="Dodaj Piwo"
+        android:textSize="12sp" />
 
     <!--<Button-->
     <!--android:id="@+id/button_my_advers"-->

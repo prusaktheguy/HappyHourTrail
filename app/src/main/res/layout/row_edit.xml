@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="2"
-        android:rowCount="4"
+        android:rowCount="5"
         android:background="@drawable/border"
         >
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="62dp"
-            android:layout_height="79dp"
+            android:layout_width="103dp"
+            android:layout_height="111dp"
             android:layout_column="0"
             android:layout_row="0"
             android:layout_rowSpan="4"
@@ -27,7 +27,7 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="472dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 
             />
 
-        <TextView
+        <EditText
             android:id="@+id/gatunek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:text="@string/gatunek"
             android:textColor="@android:color/white" />
 
-        <TextView
+        <EditText
             android:id="@+id/browar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:text="@string/browar"
             android:textColor="@android:color/white" />
 
-        <TextView
+        <EditText
             android:id="@+id/cena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,6 +64,24 @@
             android:layout_row="3"
             android:text="@string/cena"
             android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="50dp"
+            android:layout_row="4"
+            android:text="akceptuj" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_marginLeft="25dp"
+            android:layout_row="4"
+            android:text="Usuń" />
 
     </GridLayout>
 

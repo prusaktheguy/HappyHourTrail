@@ -54,8 +54,13 @@
             android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".BeerEdit"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditPubOffer"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PromoEdit"
-            android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,8 @@ public class MenuActivityPubWorker extends AppCompatActivity implements View.OnC
         private Button searchButton;
         private Button updatePubButton;
         private Button AddPromoButton;
-        private DatabaseReference mDatabase;
+    private Button logOutButton;
+    private DatabaseReference mDatabase;
         private FirebaseAuth mAuth;
     private ListView listPromotion;
     private ArrayAdapter adapterPromotion ;
@@ -50,10 +52,11 @@ public class MenuActivityPubWorker extends AppCompatActivity implements View.OnC
             searchButton = findViewById(R.id.button_search);
             updatePubButton = findViewById(R.id.editPubMenu);
             AddPromoButton = findViewById(R.id.addPromoButton);
+            logOutButton=findViewById(R.id.log_out_button);
             searchButton.setOnClickListener(this);
             AddPromoButton.setOnClickListener(this);
             updatePubButton.setOnClickListener(this);
-
+            logOutButton.setOnClickListener(this);
 
 
 
@@ -108,9 +111,14 @@ public class MenuActivityPubWorker extends AppCompatActivity implements View.OnC
                 startActivity(new Intent(MenuActivityPubWorker.this, MapActivity.class));
             } else if (i == R.id.editPubMenu) {
                 Log.i("scrappr", ("chcemy edytować ofertę"));
-                startActivity(new Intent(MenuActivityPubWorker.this, UpdateDataActivity.class));
+                Intent intent = new Intent(MenuActivityPubWorker.this,
+                        EditPubOffer.class);
+                intent.putExtra("nazwa", pubName);
+//                intent.putExtra("promoTitle", "");
+//                intent.putExtra("promo", "");
+                startActivity(intent);
             }else if (i == R.id.addPromoButton) {
-                Log.i("scrappr", ("chcemy edytować ofertę"));
+                Log.i("scrappr", ("chcemy edytować promocje"));
                 Intent intent = new Intent(MenuActivityPubWorker.this,
                         PromoEdit.class);
                 intent.putExtra("nazwa", pubName);
