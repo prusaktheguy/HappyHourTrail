@@ -96,7 +96,7 @@ public class SignUpAcitivity extends AppCompatActivity implements View.OnClickLi
                             mDatabase.child("users").child(user.getUid()).child("email").setValue(email.getText().toString());
                             mDatabase.child("users").child(user.getUid()).child("type").setValue("user");
                             Toast.makeText(SignUpAcitivity.this, "Zarejestrowano", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUpAcitivity.this, MenuActivity.class));
+                            startActivity(new Intent(SignUpAcitivity.this, MapActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("logowanie", "createUserWithEmail:failure", task.getException());

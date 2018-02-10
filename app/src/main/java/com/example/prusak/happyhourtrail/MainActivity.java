@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (i == R.id.guest_button) {
             Log.i("login", ("chcemy być w menu_admin niezalogowani"));
-            startActivity(new Intent(MainActivity.this, MenuActivity.class));
+            startActivity(new Intent(MainActivity.this, MapActivity.class));
         }
     }
 

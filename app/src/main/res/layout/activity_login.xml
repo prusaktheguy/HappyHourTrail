@@ -115,7 +115,8 @@
             android:layout_marginRight="200px"
             android:layout_marginTop="30px"
             android:layout_row="6"
-            android:text="Go As Guest" />
+            android:text="Go As Guest"
+            android:visibility="gone" />
     </GridLayout>
 
 </android.support.constraint.ConstraintLayout>
