@@ -80,7 +80,7 @@ public class UpdateDataActivity extends AppCompatActivity implements View.OnClic
                             !container.getElementsByClass("panel-body cml_semi").get(0).attr("style").isEmpty()
                             ) {
                         Element beerContainer = container.getElementsByClass("panel-body cml_semi").get(0);
-                        String price = container.getElementsByClass("col-xs-5 white").text();
+                        String price = container.getElementsByClass("col-xs-5").text();
 
                         String imagStyle = beerContainer.attr("style"); // You can put those two lines into one
                         String imgBeta = imagStyle.split("\\(")[1]; // TODO: Insert a check if a value is set
