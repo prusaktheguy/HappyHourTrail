@@ -23,7 +23,7 @@
             android:layout_rowSpan="4"
 
 
-            app:srcCompat="@drawable/beer"
+            android:background="@drawable/beer"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="472dp" />
 
